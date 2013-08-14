@@ -47,7 +47,7 @@ class QuestionAnswer:
             question = self.chooseQuestion()
             resposta = raw_input(question[0])
             #respostas = {0: [], 1 : []}
-            respostas = []
+            respostas, subres = [],[]
             while not resposta:
                 print ("-- A resposta nao pode estar em branco. --")
                 resposta = raw_input( question[0] )
@@ -56,10 +56,11 @@ class QuestionAnswer:
             if size > 0:
                 i = 0
                 while i < size:
-                    resposta = raw_input( self.chooseQuestion(question[1], i) )
+                    pergunta = self.chooseQuestion(question[1], i)
+                    resposta = raw_input( pergunta )
                     i += 1
-                    respostas.append({question[1] + i : resposta } )
-                    #falta identificar qual pergunta a matriz de resposta se identifica
+                    subres.append({ pergunta : resposta} )
+                respostas.append(subres)
                 print respostas
         except Exception as e:
             print (e)
