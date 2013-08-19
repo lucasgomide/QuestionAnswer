@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 13/08/2013
 
 @author: lgomide
 '''
 #!/usr/bin/python
-
 import random
-
+import re
+import sys
 class QuestionAnswer:
     
     #Cadastra as questions
@@ -14,6 +15,9 @@ class QuestionAnswer:
         return [
                     ["Voce possui um automovel? ",
                         ["Qual o modelo? ", "Qual o ano? ", "Quanto pagou? "]
+                    ],
+                    ["Possui algum imovel ? ",
+                        ["Quantos ? ", "Quais (separe por virgula) ?"]
                     ]
                 ]
     
@@ -32,6 +36,9 @@ class QuestionAnswer:
             return i
         except:
             print ("Nao existem perguntas")
+    #Formata a string, removendo 
+    def formatString(self, string):
+        return string.decode('utf-8').lower()
     
     #Seleciona randomicamente uma pergunta
     def chooseQuestion(self, qBase = None, qNext = None):
@@ -44,12 +51,13 @@ class QuestionAnswer:
     def runQuestion(self):
         try:
             question = self.chooseQuestion()
-            resposta = raw_input(question[0])
+            resposta = self.formatString( raw_input(question[0]) )
+            print resposta
             #respostas = {0: [], 1 : []}
             respostas, ressub = [], []
-            while not resposta:
-                print ("-- A resposta nao pode estar em branco. --")
-                resposta = raw_input( question[0] )
+            while not resposta or resposta  not in ["sim", "não", "nao" ]:
+                print ("-- A resposta deve ser 'sim' ou 'nao'. --")
+                resposta = self.formatString( raw_input(question[0]) )
             respostas.insert(question[1], {question[0] : resposta})
 #             respostas.append({question[0] : resposta})
             size = self.countQuestion(question[1])
@@ -57,7 +65,7 @@ class QuestionAnswer:
                 i = 0
                 while i < size:
                     pergunta = self.chooseQuestion(question[1], i)
-                    resposta = raw_input( pergunta )
+                    resposta = raw_input( self.formatString( pergunta ) )
                     i += 1
                     ressub.append({ pergunta : resposta} )
                 respostas.insert(question[1], ressub)
