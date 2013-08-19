@@ -6,7 +6,6 @@ Created on 13/08/2013
 #!/usr/bin/python
 
 import random
-import string
 
 class QuestionAnswer:
     
@@ -47,11 +46,12 @@ class QuestionAnswer:
             question = self.chooseQuestion()
             resposta = raw_input(question[0])
             #respostas = {0: [], 1 : []}
-            respostas, subres = [],[]
+            respostas, ressub = [], []
             while not resposta:
                 print ("-- A resposta nao pode estar em branco. --")
                 resposta = raw_input( question[0] )
-            respostas.append({question[0] : resposta})
+            respostas.insert(question[1], {question[0] : resposta})
+#             respostas.append({question[0] : resposta})
             size = self.countQuestion(question[1])
             if size > 0:
                 i = 0
@@ -59,8 +59,8 @@ class QuestionAnswer:
                     pergunta = self.chooseQuestion(question[1], i)
                     resposta = raw_input( pergunta )
                     i += 1
-                    subres.append({ pergunta : resposta} )
-                respostas.append(subres)
+                    ressub.append({ pergunta : resposta} )
+                respostas.insert(question[1], ressub)
                 print respostas
         except Exception as e:
             print (e)
