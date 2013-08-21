@@ -57,6 +57,7 @@ class QuestionAnswer:
 
     def runQuestion(self):
         try:
+            allAnswer = []
             while self.countQuestion() > 0:
                 question = self.chooseQuestion()
                 resposta = self.formatString( raw_input(question[0]) )
@@ -64,11 +65,13 @@ class QuestionAnswer:
                 while not resposta or resposta  not in ["sim", "não", "nao" ]:
                     print ("-- A resposta deve ser 'sim' ou 'nao'. --")
                     resposta = self.formatString( raw_input(question[0]) )
-                respostas.insert(question[1], {question[0] : resposta})
+                respostas.append({question[0] : resposta})
                 if resposta  in ["não", "nao"]:        
                     self.deleteQuestion(question[1])
+                    # Salva a resposta caso ela seja negativa
+                    allAnswer.append(respostas)
                     continue
-    #             respostas.append({question[0] : resposta})
+                    
                 size = self.countQuestion(question[1])
                 if size > 0:
                     i = 0
@@ -76,10 +79,10 @@ class QuestionAnswer:
                         pergunta = self.chooseQuestion(question[1], i)
                         resposta = raw_input( self.formatString( pergunta ) )
                         i += 1
-                        ressub.append({ pergunta : resposta} )
-                    respostas.insert(question[1], ressub)
-                    print respostas
+                        ressub.append({pergunta : resposta} )
+                    respostas.append(ressub)
                 self.deleteQuestion(question[1])
+                allAnswer.append(respostas)
             self.randomQuestion(self.question)
         except Exception as e:
             print (e)
